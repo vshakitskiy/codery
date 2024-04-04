@@ -1,4 +1,4 @@
-import { ThemeProvider } from "@/components/ThemeProvider"
+import { ThemeProvider } from "@/components/themeProvider"
 import { loader } from "@monaco-editor/react"
 
 import {
