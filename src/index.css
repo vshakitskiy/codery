@@ -70,7 +70,10 @@
     * {
         @apply border-border;
     }
+    #root {
+        @apply w-screen h-screen
+    }
     body {
-        @apply bg-background text-foreground;
+        @apply bg-[#282a36] text-foreground;
     }
 }
