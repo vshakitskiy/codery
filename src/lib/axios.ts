@@ -1,7 +1,7 @@
 import axios from "axios"
 
-const instance = axios.create({
+const pistonApi = axios.create({
     baseURL: "https://emkc.org/api/v2/piston"
 })
 
-export default instance
+export default pistonApi
