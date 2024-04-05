@@ -1,4 +1,4 @@
-import { ThemeProvider } from "@/components/ThemeProvider"
+import { ThemeProvider } from "@/providers/ThemeProvider"
 import { loader } from "@monaco-editor/react"
 
 import {
@@ -9,6 +9,7 @@ import {
 } from "react-router-dom"
 import HomePage from "./pages/Home"
 import { dracula } from "./dracula"
+import { EditorValueProvider } from "./providers/EditorValueProvider"
 
 const router = createBrowserRouter(createRoutesFromElements(
     <Route path="/" element={<HomePage />} />
@@ -21,7 +22,9 @@ const App = () => {
 
     return (
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-            <RouterProvider router={router} />
+            <EditorValueProvider>
+                <RouterProvider router={router} />
+            </EditorValueProvider>
         </ThemeProvider>
     )
 }
