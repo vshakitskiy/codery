@@ -199,9 +199,9 @@ export const dracula: editor.IStandaloneThemeData = {
     ],
     "colors": {
         "editor.foreground": "#f8f8f2",
-        "editor.background": "#282a36",
-        "editor.selectionBackground": "#44475a",
-        "editor.lineHighlightBackground": "#242530",
+        "editor.background": "#1b191b",
+        "editor.selectionBackground": "#343235",
+        "editor.lineHighlightBackground": "#242325",
         "editorCursor.foreground": "#f8f8f0",
         "editorWhitespace.foreground": "#3B3A32",
         "editorIndentGuide.activeBackground": "#9D550FB0",

@@ -4,7 +4,7 @@ import Navbar from "@/components/Navbar"
 const HomePage = () => {
 
     return (
-        <div className="h-screen">
+        <div className="h-screen bg-[#1b191b]">
             <Navbar />
             <CodeEditor />
         </div>
