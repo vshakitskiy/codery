@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Play, Loader2, FileText } from "lucide-react"
+import { Play, Loader2, FileText, Share, Check } from "lucide-react"
 import { useRuntimes } from "@/hooks/useRuntimes"
 import { TooltipProvider } from "./ui/tooltip"
 import { useEditorValue } from "@/providers/EditorValueProvider"
@@ -7,17 +7,27 @@ import pistonApi from "@/lib/axios"
 import { pistonApiExecuteReq, pistonApiExecuteRes } from "@/lib/types"
 import NavbarCommand from "./NavbarCommand"
 import ExecutionDialog from "./ExecutionDialog"
+import { compressToEncodedURIComponent as compress } from "lz-string"
+import { useToast } from "./ui/use-toast"
 
 const Navbar = () => {
     const [isPlaying, setIsPlaying] = useState(false)
+    const [isCopied, setIsCopied] = useState(false)
     const { editorValue } = useEditorValue()
     const [exResult, setExResult] = useState<pistonApiExecuteRes | null>(null)
     const [showDialog, setShowDialog] = useState(false)
     const runtimes = useRuntimes(["typescript"])
+    const { toast } = useToast()
 
     const handlePlay = async () => {
-        // todo: toast notify
-        if (!editorValue) return
+        if (!editorValue) {
+            toast({
+                title: "Error",
+                description: "There's no code to execute.",
+                duration: 3000
+            })
+            return
+        }
         
         if (!runtimes) return
         setIsPlaying(true)
@@ -32,7 +42,6 @@ const Navbar = () => {
         }
 
         const { data } = await pistonApi.post<pistonApiExecuteRes>("/execute", req)
-        console.log(data)
         setExResult(data)
 
         setIsPlaying(false)
@@ -50,18 +59,37 @@ const Navbar = () => {
                     }
                     tooltipContent={isPlaying
                         ? "Running..."
-                        : "Run code"
+                        : "Run"
                     }
                 />
                 <NavbarCommand
                     onClick={() => {
-                        // todo: toast notify
-                        if (!exResult) return
-
                         setShowDialog(true)
                     }}
                     buttonContent={<FileText className="w-4 h-4" />}
                     tooltipContent="Show last"
+                    disabled={!exResult}
+                />
+                <NavbarCommand
+                    onClick={() => {
+                        const { origin } = new URL(window.location.href)
+                        navigator.clipboard.writeText(`${origin}/?code=${compress(editorValue)}`)
+                        setIsCopied(true)
+                        setTimeout(() => setIsCopied(false), 3000)
+                        toast({
+                            title: "Link has been coopied!",
+                            description: "Anyone with the link can see the code.",
+                            duration: 3000
+                        })
+                    }}
+                    buttonContent={isCopied 
+                        ? <Check className="w-4 h-4 "/> 
+                        : <Share className="w-4 h-4" />
+                    }
+                    tooltipContent={isCopied
+                        ? "Shared"
+                        : "Share"
+                    }
                 />
             </div>
 

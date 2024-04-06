@@ -5,13 +5,14 @@ type NavbarCommandProps = {
     onClick: () => void
     buttonContent: JSX.Element
     tooltipContent: string
+    disabled?: boolean
 }
 
-const NavbarCommand = ({ onClick , buttonContent, tooltipContent }: NavbarCommandProps) => {
+const NavbarCommand = ({ onClick , buttonContent, tooltipContent, disabled }: NavbarCommandProps) => {
     return (
         <Tooltip>
             <TooltipTrigger asChild>
-                <Button variant="outline" className="h-9 w-9" size="icon" onClick={onClick}>
+                <Button variant="outline" className="h-9 w-9" size="icon" onClick={onClick} disabled={Boolean(disabled)}>
                     {buttonContent}
                 </Button>
             </TooltipTrigger>
