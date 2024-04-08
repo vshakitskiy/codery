@@ -1,21 +1,23 @@
 import { useState } from "react"
 import { Play, Loader2, FileText, Share, Check } from "lucide-react"
 import { useRuntimes } from "@/hooks/useRuntimes"
-import { TooltipProvider } from "./ui/tooltip"
+import { TooltipProvider } from "../ui/tooltip"
 import { useEditorValue } from "@/providers/EditorValueProvider"
 import pistonApi from "@/lib/axios"
 import { pistonApiExecuteReq, pistonApiExecuteRes } from "@/lib/types"
 import NavbarCommand from "./NavbarCommand"
 import ExecutionDialog from "./ExecutionDialog"
 import { compressToEncodedURIComponent as compress } from "lz-string"
-import { useToast } from "./ui/use-toast"
+import { useToast } from "../ui/use-toast"
 
 const Navbar = () => {
     const [isPlaying, setIsPlaying] = useState(false)
     const [isCopied, setIsCopied] = useState(false)
-    const { editorValue } = useEditorValue()
-    const [exResult, setExResult] = useState<pistonApiExecuteRes | null>(null)
     const [showDialog, setShowDialog] = useState(false)
+
+    const [exResult, setExResult] = useState<pistonApiExecuteRes | null>(null)
+    
+    const { editorValue } = useEditorValue()
     const runtimes = useRuntimes(["typescript"])
     const { toast } = useToast()
 

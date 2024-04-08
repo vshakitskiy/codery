@@ -1,8 +1,8 @@
 import { cn } from "@/lib/utils"
-import { Button } from "./ui/button"
-import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "./ui/dialog"
-import { Label } from "./ui/label"
-import { Textarea } from "./ui/textarea"
+import { Button } from "../ui/button"
+import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "../ui/dialog"
+import { Label } from "../ui/label"
+import { Textarea } from "../ui/textarea"
 import { pistonApiExecuteRes } from "@/lib/types"
 
 type ExecutionDialogProps = {
@@ -25,19 +25,19 @@ const ExecutionDialog = ({ open, setOpen, exResult }: ExecutionDialogProps) => {
                     <Textarea 
                         value={exResult.run.code === 0 ? exResult.run.output : `Program exited with code ${exResult.run.code}.`} 
                         readOnly 
-                        className={cn("resize-none mt-2", exResult.run.code === 0 ? "" : "text-secondary-foreground")}
+                        className={cn("resize-none mt-2 h-32", exResult.run.code === 0 ? "" : "text-secondary-foreground")}
                         id="output"    
                     />
                         
-                    {exResult.compile?.output ? (<>
+                    {exResult.compile?.output ? (<div className="mt-6">
                         <Label htmlFor="compile">Compiler</Label>
                         <Textarea
                             value={exResult.compile.output}
                             readOnly
-                            className="resize-none text-destructive mt-2"
+                            className="resize-none text-destructive mt-2 h-32"
                             id="compile"
                         />
-                    </>) : null}
+                    </div>) : null}
                 </>) : null}</div>
                 <DialogFooter>
                     <DialogClose asChild>

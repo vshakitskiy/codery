@@ -1,5 +1,5 @@
-import CodeEditor from "@/components/CodeEditor"
-import Navbar from "@/components/Navbar"
+import CodeEditor from "@/components/Editor/CodeEditor"
+import Navbar from "@/components/Navbar/Navbar"
 
 const HomePage = () => {
 
