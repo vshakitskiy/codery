@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react"
 import { decompressFromEncodedURIComponent as decompress } from "lz-string"
 import { useToast } from "@/components/ui/use-toast"
+import { editorDefaultValue } from "@/lib/constants"
 
 type EditorValueProviderProps = {
     children: React.ReactNode
@@ -28,16 +29,28 @@ export const EditorValueProvider = ({ children }: EditorValueProviderProps) => {
         const code = params.get("code")
         if (code) {
             const codeDecompressed = decompress(code)
-            if (!codeDecompressed)
+
+            if (codeDecompressed) {
                 setTimeout(() => toast({
-                    title: "Error",
-                    description: "Unabled to extract the code.",
+                    title: "Success",
+                    description: "Code  was successfully extracted from the URL.",
                     duration: 3000
                 }), 0)
-            setEditorValue(codeDecompressed ? codeDecompressed : "const sayHello = (name: string = \"stranger\") => {\r\n    console.log(`Hello, ${name}`)\r\n}\r\n\r\nsayHello(\"Mike\")")
-        } else {
-            setEditorValue("const sayHello = (name: string = \"stranger\") => {\r\n    console.log(`Hello, ${name}`)\r\n}\r\n\r\nsayHello(\"Mike\")")
+                setEditorValue(codeDecompressed)
+                localStorage.setItem("code", codeDecompressed)
+
+                return
+            }
+
+            setTimeout(() => toast({
+                title: "Error",
+                description: "Unabled to extract the code from the URL.",
+                duration: 3000
+            }), 0)
         }
+
+        const editorValue = localStorage.getItem("code")
+        setEditorValue(editorValue || editorDefaultValue)
     }, [])
 
     return (

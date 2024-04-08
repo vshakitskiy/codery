@@ -16,7 +16,10 @@ const CodeEditor = () => {
                         enabled: false
                     },
                     fontSize: 16,
-                    fontFamily: "monospace"
+                    fontFamily: "monospace",
+                    scrollBeyondLastLine: false,
+                    lineNumbersMinChars: 3,
+                    
                 }}
                 height="100vh"
                 theme="dracula"
@@ -28,7 +31,10 @@ const CodeEditor = () => {
                     editor.focus()
                 }}
                 value={editorValue}
-                onChange={(value) => setEditorValue(value as string)}
+                onChange={(value) => {
+                    setEditorValue(value as string)
+                    localStorage.setItem("code", value as string)
+                }}
             />
         </div>
     )

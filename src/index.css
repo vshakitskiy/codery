@@ -54,7 +54,7 @@
         @apply border-border;
     }
     #root {
-        @apply w-screen h-screen
+        @apply w-screen h-screen;
     }
     body {
         @apply bg-[#282a36] text-foreground;

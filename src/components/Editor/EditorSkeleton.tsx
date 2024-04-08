@@ -1,8 +1,8 @@
-import { Skeleton } from "./ui/skeleton"
+import { Skeleton } from "../ui/skeleton"
 
 const EditorSkeleton = () => {
     return (
-        <div className="fixed left-[70px] top-0">
+        <div className="fixed left-[52px] top-0">
             {[...Array(30)].map((_, i) =>
                 <Skeleton
                     className="h-[18px] bg-[#27272a]"
