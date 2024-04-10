@@ -3,12 +3,12 @@ import { Button } from "../ui/button"
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "../ui/dialog"
 import { Label } from "../ui/label"
 import { Textarea } from "../ui/textarea"
-import { pistonApiExecuteRes } from "@/lib/types"
+import { PistonApiExecuteRes } from "@/lib/types"
 
 type ExecutionDialogProps = {
     open: boolean
     setOpen: (open: boolean) => void
-    exResult: pistonApiExecuteRes | null
+    exResult: PistonApiExecuteRes | null
 }
 
 const ExecutionDialog = ({ open, setOpen, exResult }: ExecutionDialogProps) => {

@@ -1,25 +1,25 @@
 import { useState } from "react"
 import { Play, Loader2, FileText, Share, Check } from "lucide-react"
-import { useRuntimes } from "@/hooks/useRuntimes"
 import { TooltipProvider } from "../ui/tooltip"
-import { useEditorValue } from "@/providers/EditorValueProvider"
+import { useEditorOptions } from "@/providers/EditorProvider"
 import pistonApi from "@/lib/axios"
-import { pistonApiExecuteReq, pistonApiExecuteRes } from "@/lib/types"
+import { PistonApiExecuteReq, PistonApiExecuteRes } from "@/lib/types"
 import NavbarCommand from "./NavbarCommand"
 import ExecutionDialog from "./ExecutionDialog"
 import { compressToEncodedURIComponent as compress } from "lz-string"
 import { useToast } from "../ui/use-toast"
+import LanguageSelection from "./LanguageSelection"
+import { cn } from "@/lib/utils"
+import { useIsMobile } from "@/hooks/useIsMobile"
 
 const Navbar = () => {
     const [isPlaying, setIsPlaying] = useState(false)
     const [isCopied, setIsCopied] = useState(false)
+    const { editorValue, runtimes, selectedLanguage } = useEditorOptions()
+    const [exResult, setExResult] = useState<PistonApiExecuteRes | null>(null)
     const [showDialog, setShowDialog] = useState(false)
-
-    const [exResult, setExResult] = useState<pistonApiExecuteRes | null>(null)
-    
-    const { editorValue } = useEditorValue()
-    const runtimes = useRuntimes(["typescript"])
     const { toast } = useToast()
+    const isMobile = useIsMobile()
 
     const handlePlay = async () => {
         if (!editorValue) {
@@ -32,18 +32,22 @@ const Navbar = () => {
         }
         
         if (!runtimes) return
+
+        const runtime = runtimes.find(({ language }) => language === selectedLanguage)
+        if (!runtime) return
+
         setIsPlaying(true)
 
-        const req: pistonApiExecuteReq = {
-            language: runtimes[0].language,
-            version: runtimes[0].v,
+        const req: PistonApiExecuteReq = {
+            language: runtime.language,
+            version: runtime.v,
             files: [{
                 name: "codery",
                 content: editorValue
             }]
         }
 
-        const { data } = await pistonApi.post<pistonApiExecuteRes>("/execute", req)
+        const { data } = await pistonApi.post<PistonApiExecuteRes>("/execute", req)
         setExResult(data)
 
         setIsPlaying(false)
@@ -52,7 +56,7 @@ const Navbar = () => {
 
     return (
         <TooltipProvider delayDuration={500}>
-            <div className="fixed z-20 rounded-bl-lg py-2 px-8 right-0 bg-background flex items-center gap-1">
+            <div className={cn("fixed z-20 right-0 py-2 bg-background flex items-center gap-1", isMobile ? "bottom-0 rounded-tl-lg flex-col px-2" : "top-0 rounded-bl-lg px-8")}>
                 <NavbarCommand
                     onClick={handlePlay}
                     buttonContent={isPlaying 
@@ -64,6 +68,7 @@ const Navbar = () => {
                         : "Run"
                     }
                 />
+                <LanguageSelection />
                 <NavbarCommand
                     onClick={() => {
                         setShowDialog(true)
@@ -75,7 +80,7 @@ const Navbar = () => {
                 <NavbarCommand
                     onClick={() => {
                         const { origin } = new URL(window.location.href)
-                        navigator.clipboard.writeText(`${origin}/?code=${compress(editorValue)}`)
+                        navigator.clipboard.writeText(`${origin}/?lang=${selectedLanguage}&code=${compress(editorValue)}`)
                         setIsCopied(true)
                         setTimeout(() => setIsCopied(false), 3000)
                         toast({

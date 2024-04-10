@@ -9,7 +9,8 @@ import {
 } from "react-router-dom"
 import HomePage from "./pages/Home"
 import { dracula } from "./dracula"
-import { EditorValueProvider } from "./providers/EditorValueProvider"
+import { EditorProvider } from "./providers/EditorProvider"
+import { languages } from "./lib/constants"
 
 const router = createBrowserRouter(createRoutesFromElements(
     <Route path="/" element={<HomePage />} />
@@ -22,9 +23,9 @@ const App = () => {
 
     return (
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-            <EditorValueProvider>
+            <EditorProvider languages={languages}>
                 <RouterProvider router={router} />
-            </EditorValueProvider>
+            </EditorProvider>
         </ThemeProvider>
     )
 }
