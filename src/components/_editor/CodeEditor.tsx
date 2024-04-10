@@ -2,11 +2,11 @@ import MonacoEditor from "@monaco-editor/react"
 import { useRef } from "react"
 import EditorSkeleton from "./EditorSkeleton"
 import { editor } from "monaco-editor"
-import { useEditorValue } from "@/providers/EditorValueProvider"
+import { useEditorOptions } from "@/providers/EditorProvider"
 
 const CodeEditor = () => {
     const editorRef = useRef<editor.IStandaloneCodeEditor>()
-    const { editorValue, setEditorValue } = useEditorValue()
+    const { editorValue, setEditorValue, selectedLanguage } = useEditorOptions()
 
     return (
         <div>
@@ -25,7 +25,7 @@ const CodeEditor = () => {
                 theme="dracula"
                 loading={<EditorSkeleton />}
                 defaultValue={editorValue}
-                language="typescript"
+                language={selectedLanguage}
                 onMount={editor => {
                     editorRef.current = editor
                     editor.focus()

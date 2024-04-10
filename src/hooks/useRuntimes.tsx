@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useState } from "react"
 import pistonApi from "@/lib/axios"
-import { pistonApiRuntimes, runtimes } from "@/lib/types"
+import { PistonApiRuntimes, Runtimes } from "@/lib/types"
 import { transformRuntimes } from "@/lib/utils"
 
 export const useRuntimes = (runtimeNames: string[]) => {
-    const [runtimes, setRuntimes] = useState<runtimes | null>(null)
+    const [runtimes, setRuntimes] = useState<Runtimes | null>(null)
 
     const updateRuntimes = useCallback(async () => {
-        const { data } = await pistonApi.get<pistonApiRuntimes>("/runtimes")
+        const { data } = await pistonApi.get<PistonApiRuntimes>("/runtimes")
         setRuntimes(transformRuntimes(data, runtimeNames))
     }, [])
 
